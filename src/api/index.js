@@ -1,6 +1,11 @@
 import { Router } from 'express'
 import user from './user'
 import auth from './auth'
+import cities from './cities'
+import states from './states'
+import organizations from './organizations'
+import branches from './branches'
+import campus from './campus'
 
 const router = new Router()
 
@@ -29,5 +34,11 @@ const router = new Router()
  */
 router.use('/users', user)
 router.use('/auth', auth)
+router.use('/states', states)
+router.use('/cities', cities)
+router.use('/branches', branches)
+router.use('/organizations', organizations)
+router.use('/campuses', campus)
+
 
 export default router

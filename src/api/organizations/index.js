@@ -19,7 +19,7 @@ const { orgName, orgType, orgShortName, orgAddress, city, state, orgPin, orgPAN,
  * @apiError 404 Projects not found.
  */
 router.post('/',
-    body({ orgName, orgType, orgShortName, orgAddress, cityCode, stateCode, orgPin, orgPAN, gst, createdBy }),
+    body({ orgName, orgType, orgShortName, orgAddress, city, state, orgPin, orgPAN, gst, createdBy }),
     create)
 
 /**
@@ -57,7 +57,7 @@ router.get('/:id',
  * @apiError 404 Projects not found.
  */
 router.put('/:id',
-    body({ orgName, orgType, orgShortName, orgAddress, cityCode, stateCode, orgPin, orgPAN, gst, createdBy }),
+    body({ orgName, orgType, orgShortName, orgAddress, city, state, orgPin, orgPAN, gst, createdBy }),
     update)
 
 /**
