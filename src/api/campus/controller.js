@@ -8,7 +8,7 @@ const formatData = campus => {
     city: campus.city._id,
     cityName: campus.city.cityName,
     parentBranch: campus.parentBranch._id,
-    branchName: campus.parentBranch.nam
+    branchName: campus.parentBranch.name
   }
 }
 
