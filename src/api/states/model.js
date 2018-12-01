@@ -1,41 +1,46 @@
 import mongoose, { Schema } from 'mongoose'
 
-const statesSchema = new Schema({
+const statesSchema = new Schema(
+  {
     stateName: {
-        type: String
+      type: String
     },
     stateShortCode: {
       type: String
     },
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Employees'
+      ref: 'User'
     },
     status: {
       type: String
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+)
 
 statesSchema.methods = {
-    view (full) {
-      const view = {
-        // simple view
-        id: this.id,
-        stateName: this.stateName,
-        stateShortCode: this.stateShortCode,
-        createdBy: this.createdBy,
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
-      }
-  
-      return full ? {
+  view (full) {
+    const view = {
+      // simple view
+      id: this.id,
+      stateName: this.stateName,
+      stateShortCode: this.stateShortCode,
+      createdBy: this.createdBy,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt
+    }
+
+    return full
+      ? {
         ...view
         // add properties for a full view
-      } : view
-    }
+      }
+      : view
   }
+}
 
 const model = mongoose.model('States', statesSchema)
 
