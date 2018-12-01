@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose'
 
-const branchesSchema = new Schema({
+const branchesSchema = new Schema(
+  {
     name: {
-        type: String
+      type: String
     },
     code: {
       type: String
@@ -32,33 +33,37 @@ const branchesSchema = new Schema({
     status: {
       type: String
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+)
 
 branchesSchema.methods = {
-    view (full) {
-      const view = {
-        // simple view
-        id: this.id,
-        name: this.name,
-        code: this.code,
-        parentOrg: this.parentOrg,
-        address: this.address,
-        city: this.city,
-        state: this.state,
-        pincode: this.pincode,
-        createdBy: this.createdBy,
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
-      }
-  
-      return full ? {
+  view (full) {
+    const view = {
+      // simple view
+      id: this.id,
+      name: this.name,
+      code: this.code,
+      parentOrg: this.parentOrg,
+      address: this.address,
+      city: this.city,
+      state: this.state,
+      pincode: this.pincode,
+      createdBy: this.createdBy,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt
+    }
+
+    return full
+      ? {
         ...view
         // add properties for a full view
-      } : view
-    }
+      }
+      : view
   }
+}
 
 const model = mongoose.model('Branches', branchesSchema)
 
