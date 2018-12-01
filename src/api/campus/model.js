@@ -1,8 +1,12 @@
 import mongoose, { Schema } from 'mongoose'
 
-const campusSchema = new Schema({
+const campusSchema = new Schema(
+  {
+    campusName: {
+      type: String
+    },
     campusCode: {
-      type: Number
+      type: String
     },
     parentBranch: {
       type: Schema.Types.ObjectId,
@@ -33,33 +37,38 @@ const campusSchema = new Schema({
     status: {
       type: String
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+)
 
 campusSchema.methods = {
-    view (full) {
-      const view = {
-        // simple view
-        id: this.id,
-        campusCode: this.campusCode,
-        parentBranch: this.parentBranch,
-        parentOrg: this.parentOrg,
-        address: this.address,
-        city: this.city,
-        state: this.state,
-        pincode: this.pincode,
-        createdBy: this.createdBy,
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
-      }
-  
-      return full ? {
+  view (full) {
+    const view = {
+      // simple view
+      id: this.id,
+      campusName: this.campusName,
+      campusCode: this.campusCode,
+      parentBranch: this.parentBranch,
+      parentOrg: this.parentOrg,
+      address: this.address,
+      city: this.city,
+      state: this.state,
+      pincode: this.pincode,
+      createdBy: this.createdBy,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt
+    }
+
+    return full
+      ? {
         ...view
         // add properties for a full view
-      } : view
-    }
+      }
+      : view
   }
+}
 
 const model = mongoose.model('Campuses', campusSchema)
 
