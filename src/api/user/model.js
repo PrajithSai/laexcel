@@ -7,46 +7,54 @@ import { env } from '../../config'
 
 const roles = ['user', 'admin']
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    match: /^\S+@\S+\.\S+$/,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      match: /^\S+@\S+\.\S+$/,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6
+    },
+    name: {
+      type: String,
+      index: true,
+      trim: true
+    },
+    services: {
+      facebook: String,
+      github: String,
+      google: String
+    },
+    role: {
+      type: String,
+      enum: roles,
+      default: 'user'
+    },
+    picture: {
+      type: String,
+      trim: true
+    },
+    status: { type: String },
+    roles: [{ type: String }]
   },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6
-  },
-  name: {
-    type: String,
-    index: true,
-    trim: true
-  },
-  services: {
-    facebook: String,
-    github: String,
-    google: String
-  },
-  role: {
-    type: String,
-    enum: roles,
-    default: 'user'
-  },
-  picture: {
-    type: String,
-    trim: true
+  {
+    timestamps: true
   }
-}, {
-  timestamps: true
-})
+)
 
 userSchema.path('email').set(function (email) {
   if (!this.picture || this.picture.indexOf('https://gravatar.com') === 0) {
-    const hash = crypto.createHash('md5').update(email).digest('hex')
+    const hash = crypto
+      .createHash('md5')
+      .update(email)
+      .digest('hex')
     this.picture = `https://gravatar.com/avatar/${hash}?d=identicon`
   }
 
@@ -63,10 +71,13 @@ userSchema.pre('save', function (next) {
   /* istanbul ignore next */
   const rounds = env === 'test' ? 1 : 9
 
-  bcrypt.hash(this.password, rounds).then((hash) => {
-    this.password = hash
-    next()
-  }).catch(next)
+  bcrypt
+    .hash(this.password, rounds)
+    .then(hash => {
+      this.password = hash
+      next()
+    })
+    .catch(next)
 })
 
 userSchema.methods = {
@@ -78,13 +89,29 @@ userSchema.methods = {
       fields = [...fields, 'email', 'createdAt']
     }
 
-    fields.forEach((field) => { view[field] = this[field] })
+    fields.forEach(field => {
+      view[field] = this[field]
+    })
 
     return view
   },
 
+  partialView () {
+    return {
+      id: this.id,
+      // userName: this.userName,
+      name: this.name,
+      email: this.email,
+      // password: this.password,
+      roles: this.roles,
+      status: this.status
+    }
+  },
+
   authenticate (password) {
-    return bcrypt.compare(password, this.password).then((valid) => valid ? this : false)
+    return bcrypt
+      .compare(password, this.password)
+      .then(valid => (valid ? this : false))
   }
 }
 
@@ -92,7 +119,9 @@ userSchema.statics = {
   roles,
 
   createFromService ({ service, id, email, name, picture }) {
-    return this.findOne({ $or: [{ [`services.${service}`]: id }, { email }] }).then((user) => {
+    return this.findOne({
+      $or: [{ [`services.${service}`]: id }, { email }]
+    }).then(user => {
       if (user) {
         user.services[service] = id
         user.name = name
@@ -100,7 +129,13 @@ userSchema.statics = {
         return user.save()
       } else {
         const password = randtoken.generate(16)
-        return this.create({ services: { [service]: id }, email, password, name, picture })
+        return this.create({
+          services: { [service]: id },
+          email,
+          password,
+          name,
+          picture
+        })
       }
     })
   }
