@@ -6,7 +6,19 @@ import { schema } from './model'
 export Organizations, { schema } from './model'
 
 const router = new Router()
-const { orgName, orgType, orgShortName, orgAddress, city, state, orgPin, orgPAN, gst, createdBy } = schema.tree
+const {
+  legalStatus,
+  orgName,
+  orgType,
+  orgShortName,
+  orgAddress,
+  city,
+  state,
+  orgPin,
+  orgPAN,
+  gst,
+  createdBy
+} = schema.tree
 
 /**
  * @api {post} /projects Create projects
@@ -18,9 +30,23 @@ const { orgName, orgType, orgShortName, orgAddress, city, state, orgPin, orgPAN,
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.post('/',
-    body({ orgName, orgType, orgShortName, orgAddress, city, state, orgPin, orgPAN, gst, createdBy }),
-    create)
+router.post(
+  '/',
+  body({
+    legalStatus,
+    orgName,
+    orgType,
+    orgShortName,
+    orgAddress,
+    city,
+    state,
+    orgPin,
+    orgPAN,
+    gst,
+    createdBy
+  }),
+  create
+)
 
 /**
  * @api {get} /projects Retrieve country
@@ -30,10 +56,7 @@ router.post('/',
  * @apiSuccess {Object[]} projects List of projects.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/',
-    query(),
-    index)
-    
+router.get('/', query(), index)
 
 /**
  * @api {get} /projects/:id Retrieve projects
@@ -43,8 +66,7 @@ router.get('/',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 projects not found.
  */
-router.get('/:id',
-    show)
+router.get('/:id', show)
 
 /**
  * @api {put} /projects Create projects
@@ -56,19 +78,30 @@ router.get('/:id',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.put('/:id',
-    body({ orgName, orgType, orgShortName, orgAddress, city, state, orgPin, orgPAN, gst, createdBy }),
-    update)
+router.put(
+  '/:id',
+  body({
+    orgName,
+    orgType,
+    orgShortName,
+    orgAddress,
+    city,
+    state,
+    orgPin,
+    orgPAN,
+    gst,
+    createdBy
+  }),
+  update
+)
 
 /**
-* @api {delete} /projects/:id Delete projects
-* @apiName DeleteProjects
-* @apiGroup Projects
-* @apiSuccess (Success 204) 204 No Content.
-* @apiError 404 Projects not found.
-*/
-router.delete('/:id',
-    destroy)  
-
+ * @api {delete} /projects/:id Delete projects
+ * @apiName DeleteProjects
+ * @apiGroup Projects
+ * @apiSuccess (Success 204) 204 No Content.
+ * @apiError 404 Projects not found.
+ */
+router.delete('/:id', destroy)
 
 export default router

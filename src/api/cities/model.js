@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose'
 
-const citiesSchema = new Schema({
+const citiesSchema = new Schema(
+  {
     cityName: {
-        type: String
+      type: String
     },
     cityShortCode: {
       type: String
@@ -13,34 +14,38 @@ const citiesSchema = new Schema({
     },
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Employees'
+      ref: 'User'
     },
     status: {
       type: String
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+)
 
 citiesSchema.methods = {
-    view (full) {
-      const view = {
-        // simple view
-        id: this.id,
-        cityName: this.cityName,
-        cityShortCode: this.cityShortCode,
-        state: this.state,
-        createdBy: this.createdBy,
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
-      }
-  
-      return full ? {
+  view (full) {
+    const view = {
+      // simple view
+      id: this.id,
+      cityName: this.cityName,
+      cityShortCode: this.cityShortCode,
+      state: this.state,
+      createdBy: this.createdBy,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt
+    }
+
+    return full
+      ? {
         ...view
         // add properties for a full view
-      } : view
-    }
+      }
+      : view
   }
+}
 
 const model = mongoose.model('Cities', citiesSchema)
 
