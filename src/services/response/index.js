@@ -1,6 +1,6 @@
-export const success = (res, status) => entity => {
+export const success = (res, status, message) => entity => {
   if (entity) {
-    res.status(status || 200).json({ error: false, payload: entity })
+    res.status(status || 200).json({ error: false, payload: entity, message })
   }
   return null
 }
