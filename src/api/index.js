@@ -7,6 +7,7 @@ import organizations from './organizations'
 import branches from './branches'
 import campus from './campus'
 import room from './room'
+import preadmission from './preadmission'
 
 const router = new Router()
 
@@ -41,5 +42,6 @@ router.use('/branches', branches)
 router.use('/organizations', organizations)
 router.use('/campuses', campus)
 router.use('/room', room)
+router.use('/preadmission', preadmission)
 
 export default router
