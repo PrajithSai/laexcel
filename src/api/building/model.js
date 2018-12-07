@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 
-const branchesSchema = new Schema(
+const statesSchema = new Schema(
   {
     name: {
       type: String
@@ -8,30 +8,35 @@ const branchesSchema = new Schema(
     code: {
       type: String
     },
-    parentOrg: {
+    campus: {
       type: Schema.Types.ObjectId,
-      ref: 'Organizations'
+      ref: 'Campuses'
     },
-    address: {
-      type: Object
+    rented: {
+      type: Boolean
     },
-    city: {
-      type: Schema.Types.ObjectId,
-      ref: 'Cities'
-    },
-    state: {
-      type: Schema.Types.ObjectId,
-      ref: 'States'
-    },
-    pincode: {
+    totalArea: {
       type: Number
     },
+    floorArea: {
+      type: Number
+    },
+    carpetArea: {
+      type: Number
+    },
+    floors: [
+      {
+        floorNo: {
+          type: Number
+        },
+        floorArea: {
+          type: Number
+        }
+      }
+    ],
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User'
-    },
-    status: {
-      type: String
     }
   },
   {
@@ -39,18 +44,19 @@ const branchesSchema = new Schema(
   }
 )
 
-branchesSchema.methods = {
+statesSchema.methods = {
   view (full) {
     const view = {
       // simple view
       id: this.id,
       name: this.name,
       code: this.code,
-      parentOrg: this.parentOrg,
-      address: this.address,
-      city: this.city,
-      state: this.state,
-      pincode: this.pincode,
+      campus: this.campus,
+      rented: this.rented,
+      totalArea: this.totalArea,
+      floorArea: this.floorArea,
+      carpetArea: this.carpetArea,
+      floors: this.floors,
       createdBy: this.createdBy,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
@@ -65,7 +71,7 @@ branchesSchema.methods = {
   }
 }
 
-const model = mongoose.model('Branches', branchesSchema)
+const model = mongoose.model('Buildings', statesSchema)
 
 export const schema = model.schema
 export default model
