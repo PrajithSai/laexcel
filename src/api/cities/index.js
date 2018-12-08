@@ -1,7 +1,14 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy } from './controller'
+import {
+  create,
+  index,
+  show,
+  update,
+  destroy,
+  deleteCities
+} from './controller'
 import { schema } from './model'
 export Cities, { schema } from './model'
 
@@ -18,9 +25,7 @@ const { cityName, cityShortCode, state, createdBy } = schema.tree
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.post('/',
-    body({ cityName, cityShortCode, state, createdBy }),
-    create)
+router.post('/', body({ cityName, cityShortCode, state, createdBy }), create)
 
 /**
  * @api {get} /projects Retrieve country
@@ -30,10 +35,7 @@ router.post('/',
  * @apiSuccess {Object[]} projects List of projects.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/',
-    query(),
-    index)
-    
+router.get('/', query(), index)
 
 /**
  * @api {get} /projects/:id Retrieve projects
@@ -43,8 +45,7 @@ router.get('/',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 projects not found.
  */
-router.get('/:id',
-    show)
+router.get('/:id', show)
 
 /**
  * @api {put} /projects Create projects
@@ -56,19 +57,17 @@ router.get('/:id',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.put('/:id',
-    body({ cityName, cityShortCode, state, createdBy }),
-    update)
+router.put('/:id', body({ cityName, cityShortCode, state, createdBy }), update)
 
 /**
-* @api {delete} /projects/:id Delete projects
-* @apiName DeleteProjects
-* @apiGroup Projects
-* @apiSuccess (Success 204) 204 No Content.
-* @apiError 404 Projects not found.
-*/
-router.delete('/:id',
-    destroy)  
+ * @api {delete} /projects/:id Delete projects
+ * @apiName DeleteProjects
+ * @apiGroup Projects
+ * @apiSuccess (Success 204) 204 No Content.
+ * @apiError 404 Projects not found.
+ */
+router.delete('/:id', destroy)
 
+router.post('/delete', deleteCities)
 
 export default router

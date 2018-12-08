@@ -65,3 +65,46 @@ export const destroy = ({ params }, res, next) =>
     )
     .then(success(res, 204))
     .catch(next)
+
+export const deleteMany = (req, res, next) => {
+  const deletedOrgs = new Promise((resolve, reject) => {
+    req.body.map((orgId, i) => {
+      Organizations.findOneAndUpdate(
+        { _id: orgId },
+        { status: 'DELETED' },
+        (err, deletedResult) => {
+          if (!err) {
+            if (req.body.length === i + 1) {
+              resolve('deletion completed')
+            }
+          }
+        }
+      )
+    })
+  })
+  deletedOrgs.then(orgs => {
+    findOrganisations(req, res)
+  })
+}
+
+const findOrganisations = (req, res) =>
+  Organizations.find({ status: { $ne: 'DELETED' } })
+    .populate('state', {
+      stateName: 'state.stateName',
+      stateShortCode: 'state.stateShortCode'
+    })
+    .populate('city', {
+      cityName: 'state.cityName',
+      cityShortCode: 'state.cityShortCode'
+    })
+    .exec()
+    .then(organizations =>
+      organizations.map(organization => organization.view())
+    )
+    .then(resp =>
+      res.send({
+        error: false,
+        payload: resp,
+        message: `${req.body.length} Organisation(s) Deleted`
+      })
+    )

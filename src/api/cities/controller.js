@@ -51,3 +51,41 @@ export const destroy = ({ params }, res, next) =>
     )
     .then(success(res, 204))
     .catch(next)
+
+export const deleteCities = (req, res, next) => {
+  const deletedCities = new Promise((resolve, reject) => {
+    req.body.map((stateId, i) => {
+      Cities.findOneAndUpdate(
+        { _id: stateId },
+        { status: 'DELETED' },
+        (err, deletedResult) => {
+          if (!err) {
+            if (req.body.length === i + 1) {
+              resolve('deletion completed')
+            }
+          }
+        }
+      )
+    })
+  })
+  deletedCities.then(states => {
+    findCities(req, res)
+  })
+}
+
+const findCities = (req, res) => {
+  Cities.find({ status: { $ne: 'DELETED' } })
+    .populate('state', {
+      stateName: 'state.stateName',
+      stateShortCode: 'state.stateShortCode'
+    })
+    .exec()
+    .then(cities => cities.map(city => city.view()))
+    .then(resp =>
+      res.send({
+        error: false,
+        payload: resp,
+        message: `${req.body.length} Citie(s) Deleted`
+      })
+    )
+}
