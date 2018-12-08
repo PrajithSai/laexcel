@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy } from './controller'
+import { create, index, show, update, destroy, deleteMany } from './controller'
 import { schema } from './model'
 export Organizations, { schema } from './model'
 
@@ -17,7 +17,8 @@ const {
   orgPin,
   orgPAN,
   gst,
-  createdBy
+  createdBy,
+  status
 } = schema.tree
 
 /**
@@ -31,7 +32,7 @@ const {
  * @apiError 404 Projects not found.
  */
 router.post(
-  '/',
+  '/create',
   body({
     legalStatus,
     orgName,
@@ -43,7 +44,8 @@ router.post(
     orgPin,
     orgPAN,
     gst,
-    createdBy
+    createdBy,
+    status
   }),
   create
 )
@@ -90,7 +92,8 @@ router.put(
     orgPin,
     orgPAN,
     gst,
-    createdBy
+    createdBy,
+    status
   }),
   update
 )
@@ -103,5 +106,7 @@ router.put(
  * @apiError 404 Projects not found.
  */
 router.delete('/:id', destroy)
+
+router.post('/delete', deleteMany)
 
 export default router
