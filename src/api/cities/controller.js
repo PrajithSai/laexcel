@@ -39,8 +39,18 @@ export const update = ({ bodymen: { body }, params }, res, next) =>
   Cities.findById(params.id)
     .then(notFound(res))
     .then(cities => (cities ? _.merge(cities, body).save() : null))
-    .then(cities => (cities ? cities.view(true) : null))
-    .then(success(res))
+    .then(cities =>
+      cities
+        ? Cities.findById(cities._id)
+          .populate('state', {
+            stateName: 'state.stateName',
+            stateShortCode: 'state.stateShortCode'
+          })
+          .exec()
+          .then(populatedCity => populatedCity.view(true))
+        : null
+    )
+    .then(success(res, 201, `"${body.cityName}" Updated Successfully`))
     .catch(next)
 
 export const destroy = ({ params }, res, next) =>
