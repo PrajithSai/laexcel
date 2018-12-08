@@ -28,7 +28,7 @@ export const update = ({ bodymen: { body }, params }, res, next) =>
     .then(notFound(res))
     .then(states => (states ? _.merge(states, body).save() : null))
     .then(states => (states ? states.view(true) : null))
-    .then(success(res))
+    .then(success(res, 201, `"${body.stateName}" Updated Successfully`))
     .catch(next)
 
 export const destroy = ({ params }, res, next) =>
