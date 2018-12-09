@@ -31,7 +31,9 @@ const branchesSchema = new Schema(
       ref: 'User'
     },
     status: {
-      type: String
+      type: String,
+      default: 'ACTIVE',
+      enum: ['ACTIVE', 'DELETED']
     }
   },
   {
@@ -43,6 +45,7 @@ branchesSchema.methods = {
   view (full) {
     const view = {
       // simple view
+      _id: this.id,
       id: this.id,
       name: this.name,
       code: this.code,

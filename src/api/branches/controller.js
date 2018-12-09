@@ -49,3 +49,13 @@ export const destroy = ({ params }, res, next) =>
     )
     .then(success(res, 204))
     .catch(next)
+
+export const deleteBranches = (req, res, next) =>
+  Branches.updateMany(
+    { _id: { $in: req.body.ids } },
+    { $set: { status: 'DELETED' } }
+  )
+    .then(notFound(res))
+    .then(branches => branches)
+    .then(success(res))
+    .catch(next)
