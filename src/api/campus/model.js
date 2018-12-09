@@ -35,7 +35,9 @@ const campusSchema = new Schema(
       ref: 'Employees'
     },
     status: {
-      type: String
+      type: String,
+      default: 'ACTIVE',
+      enum: ['ACTIVE', 'DELETED']
     }
   },
   {
@@ -47,6 +49,7 @@ campusSchema.methods = {
   view (full) {
     const view = {
       // simple view
+      _id: this.id,
       id: this.id,
       campusName: this.campusName,
       campusCode: this.campusCode,

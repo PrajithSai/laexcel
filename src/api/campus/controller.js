@@ -51,3 +51,13 @@ export const destroy = ({ params }, res, next) =>
     )
     .then(success(res, 204))
     .catch(next)
+
+export const deleteCampuses = (req, res, next) =>
+  Campuses.updateMany(
+    { _id: { $in: req.body.ids } },
+    { $set: { status: 'DELETED' } }
+  )
+    .then(notFound(res))
+    .then(campuses => campuses)
+    .then(success(res))
+    .catch(next)
