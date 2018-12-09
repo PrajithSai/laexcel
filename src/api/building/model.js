@@ -12,6 +12,12 @@ const statesSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Campuses'
     },
+    campusName: {
+      type: String
+    },
+    campusAddress: {
+      type: Object
+    },
     rented: {
       type: Boolean
     },
@@ -26,6 +32,7 @@ const statesSchema = new Schema(
     },
     floors: [
       {
+        rowId: { type: Number },
         floorNo: {
           type: Number
         },
@@ -37,7 +44,8 @@ const statesSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User'
-    }
+    },
+    status: { type: String }
   },
   {
     timestamps: true
@@ -52,11 +60,14 @@ statesSchema.methods = {
       name: this.name,
       code: this.code,
       campus: this.campus,
+      campusName: this.campusName,
+      campusAddress: this.campusAddress,
       rented: this.rented,
       totalArea: this.totalArea,
       floorArea: this.floorArea,
       carpetArea: this.carpetArea,
       floors: this.floors,
+      status: this.status,
       createdBy: this.createdBy,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt

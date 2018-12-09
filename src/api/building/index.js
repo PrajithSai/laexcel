@@ -1,7 +1,14 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy } from './controller'
+import {
+  create,
+  index,
+  show,
+  update,
+  destroy,
+  deleteBuildings
+} from './controller'
 import { schema } from './model'
 export States, { schema } from './model'
 
@@ -10,12 +17,15 @@ const {
   name,
   code,
   campus,
+  campusName,
+  campusAddress,
   rented,
   totalArea,
   floorArea,
   carpetArea,
   floors,
-  createdBy
+  createdBy,
+  status
 } = schema.tree
 
 /**
@@ -34,12 +44,15 @@ router.post(
     name,
     code,
     campus,
+    campusName,
+    campusAddress,
     rented,
     totalArea,
     floorArea,
     carpetArea,
     floors,
-    createdBy
+    createdBy,
+    status
   }),
   create
 )
@@ -80,12 +93,15 @@ router.put(
     name,
     code,
     campus,
+    campusName,
+    campusAddress,
     rented,
     totalArea,
     floorArea,
     carpetArea,
     floors,
-    createdBy
+    createdBy,
+    status
   }),
   update
 )
@@ -98,5 +114,7 @@ router.put(
  * @apiError 404 Projects not found.
  */
 router.delete('/:id', destroy)
+
+router.post('/delete', deleteBuildings)
 
 export default router
