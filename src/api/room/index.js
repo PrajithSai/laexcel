@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy } from './controller'
+import { create, index, show, update, destroy, deleteRooms } from './controller'
 import { schema } from './model'
 export Room, { schema } from './model'
 
@@ -73,7 +73,7 @@ router.get('/:id', show)
  * @apiError 404 Projects not found.
  */
 router.put(
-  '/:id',
+  '/:id/update',
   body({
     parentBranch,
     parentBuilding,
@@ -95,5 +95,7 @@ router.put(
  * @apiError 404 Projects not found.
  */
 router.delete('/:id', destroy)
+
+router.put('/delete', deleteRooms)
 
 export default router

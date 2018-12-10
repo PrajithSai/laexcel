@@ -7,10 +7,10 @@ const roomSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Branches'
     },
-    // parentBuilding: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Building'
-    // },
+    parentBuilding: {
+      type: Schema.Types.ObjectId,
+      ref: 'Buildings'
+    },
     parentOrg: {
       type: Schema.Types.ObjectId,
       ref: 'Organizations'
@@ -44,6 +44,7 @@ roomSchema.methods = {
   view (full) {
     const view = {
       // simple view
+      _id: this.id,
       id: this.id,
       parentBranch: this.parentBranch,
       parentBuilding: this.parentBuilding,
