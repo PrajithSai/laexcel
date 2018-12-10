@@ -41,7 +41,10 @@ export const update = ({ bodymen: { body }, params }, res, next) =>
   Room.findById(params.id)
     .then(notFound(res))
     .then(room => (room ? _.merge(room, body).save() : null))
-    .then(room => (room ? room.view(true) : null))
+    .then(room =>
+      Room.findById(room.id).populate('parentBranch parentBuilding')
+    )
+    .then(formatData)
     .then(success(res))
     .catch(next)
 
