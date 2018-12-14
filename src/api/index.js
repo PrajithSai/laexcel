@@ -9,6 +9,8 @@ import campus from './campus'
 import room from './room'
 import preadmission from './preadmission'
 import buildings from './building'
+import sourcetype from './soruceType'
+import agencycodes from './agencyCode'
 
 const router = new Router()
 
@@ -45,5 +47,7 @@ router.use('/campuses', campus)
 router.use('/room', room)
 router.use('/preadmission', preadmission)
 router.use('/buildings', buildings)
+router.use('/sourcetype', sourcetype)
+router.use('/agencycodes', agencycodes)
 
 export default router
