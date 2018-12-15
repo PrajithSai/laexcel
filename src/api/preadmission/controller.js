@@ -3,6 +3,7 @@ import { success, notFound } from '../../services/response/'
 import { PreAdmission } from '.'
 
 export const create = ({ bodymen: { body } }, res, next) => {
+  body.dateOfEnquiry = body.others.dateOfEnquiry
   PreAdmission.create(body)
     .then(preAdmissions =>
       PreAdmission.findById(preAdmissions._id)
@@ -58,3 +59,14 @@ export const destroy = ({ params }, res, next) =>
     )
     .then(success(res, 204))
     .catch(next)
+
+export const basedOnEnquiryDate = (req, res, next) => {
+  console.log(req.body);
+  PreAdmission.find({  dateOfEnquiry: { $gte: req.body.from, $lte: req.body.to } } , (err, resp) => {
+    if (err) {
+      res.send({ error: true, message: "fetch failed", result: [] });
+    } else {
+      res.send({ error: false, message: "fetch failed", result: resp });
+    }
+  })
+}

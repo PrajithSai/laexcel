@@ -11,6 +11,7 @@ import preadmission from './preadmission'
 import buildings from './building'
 import sourcetype from './soruceType'
 import agencycodes from './agencyCode'
+import employee from './employee'
 
 const router = new Router()
 
@@ -49,5 +50,6 @@ router.use('/preadmission', preadmission)
 router.use('/buildings', buildings)
 router.use('/sourcetype', sourcetype)
 router.use('/agencycodes', agencycodes)
+router.use('/employee', employee)
 
 export default router
