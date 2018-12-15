@@ -11,9 +11,6 @@ const preAdmissionSchema = new Schema(
     type: {
       type: String
     },
-    dateOfEnquiry: {
-      type: Date
-    },
     Program: {
       type: String
     },
@@ -36,7 +33,8 @@ const preAdmissionSchema = new Schema(
     },
     assignedTo: {
       type: Schema.Types.ObjectId,
-      ref: 'employee'
+      ref: 'employee',
+      default: null
     },
     status: {
       type: String

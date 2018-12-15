@@ -1,9 +1,11 @@
-import { Router } from 'express';
-import { create, show } from './controller';
+import { Router } from 'express'
+import { create, show, fetchEmployeeByRole } from './controller'
 
-const router = new Router();
+const router = new Router()
 
-router.post('/', create);
-router.get('/', show);
+router.post('/', create)
+router.get('/', show)
 
-export default router;
+router.get('/:role/role', fetchEmployeeByRole)
+
+export default router

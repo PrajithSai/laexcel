@@ -1,33 +1,42 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose'
 
-const employeeSchema = new Schema({
-  name: {
-    type: String
+const employeeSchema = new Schema(
+  {
+    name: {
+      type: String
+    },
+    email: {
+      type: String
+    },
+    password: {
+      type: String
+    },
+    phonenumber: {
+      type: String
+    },
+    address: {
+      type: String
+    },
+    role: {
+      type: String
+    },
+    status: {
+      type: String,
+      default: 'inActive',
+      enum: ['Active', 'inActive']
+    }
   },
-  email: {
-    type: String
-  },
-  password: {
-    type: String
-  },
-  phonenumber: {
-    type: String
-  },
-  address: {
-    type: String
-  },
-  role: {
-    type: String
-  },
-  status: {
-    type: String,
-    default: 'inActive',
-    enum: ['Active', 'inActive']
+  { timestamps: true }
+)
+
+employeeSchema.methods = {
+  partialView () {
+    return { id: this._id, name: this.name }
   }
-}, { timestamps: true });
+}
 
-const model = mongoose.model('employee', employeeSchema);
-const schema = model.schema;
+const model = mongoose.model('employee', employeeSchema)
+const schema = model.schema
 
-export { schema };
-export default model;
+export { schema }
+export default model

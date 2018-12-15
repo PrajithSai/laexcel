@@ -39,14 +39,18 @@ export const index = ({ querymen: { query, select, cursor } }, res, next) =>
       stateShortCode: 'state.stateShortCode'
     })
     .exec()
-    .then(preAdmissions => preAdmissions.map(preAdmission => preAdmission.view()))
+    .then(preAdmissions =>
+      preAdmissions.map(preAdmission => preAdmission.view())
+    )
     .then(success(res))
     .catch(next)
 
 export const update = ({ bodymen: { body }, params }, res, next) =>
   PreAdmission.findById(params.id)
     .then(notFound(res))
-    .then(preAdmissions => (preAdmissions ? _.merge(preAdmissions, body).save() : null))
+    .then(preAdmissions =>
+      preAdmissions ? _.merge(preAdmissions, body).save() : null
+    )
     .then(preAdmissions => (preAdmissions ? preAdmissions.view(true) : null))
     .then(success(res))
     .catch(next)
@@ -55,18 +59,49 @@ export const destroy = ({ params }, res, next) =>
   PreAdmission.findById(params.id)
     .then(notFound(res))
     .then(preAdmissions =>
-      preAdmissions ? _.merge(preAdmissions, { status: 'DELETED' }).save() : null
+      preAdmissions
+        ? _.merge(preAdmissions, { status: 'DELETED' }).save()
+        : null
     )
     .then(success(res, 204))
     .catch(next)
 
 export const basedOnEnquiryDate = (req, res, next) => {
-  console.log(req.body);
-  PreAdmission.find({  dateOfEnquiry: { $gte: req.body.from, $lte: req.body.to } } , (err, resp) => {
-    if (err) {
-      res.send({ error: true, message: "fetch failed", result: [] });
-    } else {
-      res.send({ error: false, message: "fetch failed", result: resp });
+  PreAdmission.find(
+    {
+      'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
+      assignedTo: { $eq: null }
+    },
+    (err, resp) => {
+      if (err) {
+        return res.send({
+          error: true,
+          message: 'Unable to fetch enquiries at the moment',
+          result: []
+        })
+      } else {
+        res.send({
+          error: resp.length === 0,
+          message:
+            resp.length === 0
+              ? 'No unassigned enquiries found between given dates!'
+              : `Found ${resp.length} enquiries!`,
+          result: resp
+        })
+      }
     }
-  })
+  )
 }
+
+export const allocateEnquiriesToEmp = (
+  { body: { selection, employee } },
+  res,
+  next
+) =>
+  PreAdmission.updateMany(
+    { _id: { $in: selection } },
+    { $set: { assignedTo: employee } }
+  )
+    .then(notFound(res))
+    .then(success(res))
+    .catch(next)

@@ -1,12 +1,30 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy, bulkUpload, basedOnEnquiryDate } from './controller'
+import {
+  create,
+  index,
+  show,
+  update,
+  destroy,
+  bulkUpload,
+  basedOnEnquiryDate,
+  allocateEnquiriesToEmp
+} from './controller'
 import { schema } from './model'
 export PreAdmission, { schema } from './model'
 
 const router = new Router()
-const { sourceType, agencyCode, others, type, Program, StudentName, Email, ContactNumber } = schema.tree
+const {
+  sourceType,
+  agencyCode,
+  others,
+  type,
+  Program,
+  StudentName,
+  Email,
+  ContactNumber
+} = schema.tree
 
 /**
  * @api {post} /projects Create projects
@@ -18,9 +36,20 @@ const { sourceType, agencyCode, others, type, Program, StudentName, Email, Conta
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.post('/',
-    body({ sourceType, agencyCode, others, type, Program, StudentName, Email, ContactNumber }),
-    create)
+router.post(
+  '/',
+  body({
+    sourceType,
+    agencyCode,
+    others,
+    type,
+    Program,
+    StudentName,
+    Email,
+    ContactNumber
+  }),
+  create
+)
 
 router.post('/upload', bulkUpload)
 
@@ -32,10 +61,7 @@ router.post('/upload', bulkUpload)
  * @apiSuccess {Object[]} projects List of projects.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/',
-    query(),
-    index)
-    
+router.get('/', query(), index)
 
 /**
  * @api {get} /projects/:id Retrieve projects
@@ -45,8 +71,7 @@ router.get('/',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 projects not found.
  */
-router.get('/:id',
-    show)
+router.get('/:id', show)
 
 /**
  * @api {put} /projects Create projects
@@ -58,20 +83,32 @@ router.get('/:id',
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.put('/:id',
-    body({ sourceType, agencyCode, others, type, Program, StudentName, Email, ContactNumber }),
-    update)
+router.put(
+  '/:id',
+  body({
+    sourceType,
+    agencyCode,
+    others,
+    type,
+    Program,
+    StudentName,
+    Email,
+    ContactNumber
+  }),
+  update
+)
 
 /**
-* @api {delete} /projects/:id Delete projects
-* @apiName DeleteProjects
-* @apiGroup Projects
-* @apiSuccess (Success 204) 204 No Content.
-* @apiError 404 Projects not found.
-*/
-router.delete('/:id',
-    destroy)  
+ * @api {delete} /projects/:id Delete projects
+ * @apiName DeleteProjects
+ * @apiGroup Projects
+ * @apiSuccess (Success 204) 204 No Content.
+ * @apiError 404 Projects not found.
+ */
+router.delete('/:id', destroy)
 
-router.post('/basedOnEquiryDate' ,basedOnEnquiryDate);
+router.post('/basedOnEquiryDate', basedOnEnquiryDate)
+
+router.post('/allocate', allocateEnquiriesToEmp)
 
 export default router
