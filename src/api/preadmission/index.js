@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy, bulkUpload } from './controller'
+import { create, index, show, update, destroy, bulkUpload, basedOnEnquiryDate } from './controller'
 import { schema } from './model'
 export PreAdmission, { schema } from './model'
 
@@ -72,5 +72,6 @@ router.put('/:id',
 router.delete('/:id',
     destroy)  
 
+router.post('/basedOnEquiryDate' ,basedOnEnquiryDate);
 
 export default router
