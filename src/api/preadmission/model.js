@@ -42,6 +42,7 @@ const preAdmissionSchema = new Schema(
 preAdmissionSchema.methods = {
   view (full) {
     const view = {
+      _id: this.id,
       id: this.id,
       sourceType: this.sourceType,
       agencyCode: this.agencyCode,
