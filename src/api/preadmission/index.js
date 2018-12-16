@@ -9,7 +9,8 @@ import {
   destroy,
   bulkUpload,
   basedOnEnquiryDate,
-  allocateEnquiriesToEmp
+  allocateEnquiriesToEmp,
+  acceptOrRejectEnquiry
 } from './controller'
 import { schema } from './model'
 export PreAdmission, { schema } from './model'
@@ -110,5 +111,7 @@ router.delete('/:id', destroy)
 router.post('/basedOnEquiryDate', basedOnEnquiryDate)
 
 router.post('/allocate', allocateEnquiriesToEmp)
+
+router.post('/employee', acceptOrRejectEnquiry)
 
 export default router

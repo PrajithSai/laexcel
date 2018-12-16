@@ -23,7 +23,6 @@ const preAdmissionSchema = new Schema(
     ContactNumber: {
       type: String
     },
-
     others: {
       type: Object
     },
@@ -34,6 +33,10 @@ const preAdmissionSchema = new Schema(
     assignedTo: {
       type: Schema.Types.ObjectId,
       ref: 'employee',
+      default: null
+    },
+    isAcceptedByEmp: {
+      type: Boolean,
       default: null
     },
     status: {
