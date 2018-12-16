@@ -70,7 +70,8 @@ export const basedOnEnquiryDate = (req, res, next) => {
   PreAdmission.find(
     {
       'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
-      assignedTo: { $eq: null }
+      Program: req.body.program,
+      assignedTo: { $eq: req.body.assignedTo ? req.body.assignedTo : null }
     },
     (err, resp) => {
       if (err) {
@@ -105,3 +106,22 @@ export const allocateEnquiriesToEmp = (
     .then(notFound(res))
     .then(success(res))
     .catch(next)
+
+export const acceptOrRejectEnquiry = (
+  { body: { selection, status } },
+  res,
+  next
+) => {
+  const update = {}
+  if (status.toLowerCase() === 'return') {
+    update.assignedTo = null
+    update.isAcceptedByEmp = null
+  }
+  if (status.toLowerCase() === 'accept') {
+    update.isAcceptedByEmp = true
+  }
+  return PreAdmission.updateMany({ _id: { $in: selection } }, { $set: update })
+    .then(notFound(res))
+    .then(success(res))
+    .catch(next)
+}
