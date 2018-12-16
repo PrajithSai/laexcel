@@ -12,6 +12,9 @@ import buildings from './building'
 import sourcetype from './soruceType'
 import agencycodes from './agencyCode'
 import employee from './employee'
+import program from './program'
+import course from './course'
+import Batch from './batch'
 
 const router = new Router()
 
@@ -51,5 +54,8 @@ router.use('/buildings', buildings)
 router.use('/sourcetype', sourcetype)
 router.use('/agencycodes', agencycodes)
 router.use('/employee', employee)
+router.use('/program', program)
+router.use('/course', course)
+router.use('/batch', Batch)
 
 export default router
