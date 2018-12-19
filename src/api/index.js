@@ -15,6 +15,7 @@ import employee from './employee'
 import program from './program'
 import course from './course'
 import Batch from './batch'
+import CourseDuration from './courseDuration'
 
 const router = new Router()
 
@@ -57,5 +58,5 @@ router.use('/employee', employee)
 router.use('/program', program)
 router.use('/course', course)
 router.use('/batch', Batch)
-
+router.use('/courseDuration', CourseDuration)
 export default router
