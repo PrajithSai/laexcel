@@ -13,6 +13,10 @@ import sourcetype from './soruceType'
 import agencycodes from './agencyCode'
 import employee from './employee'
 import responsetype from './responseType'
+import program from './program'
+import course from './course'
+import Batch from './batch'
+import CourseDuration from './courseDuration'
 
 const router = new Router()
 
@@ -53,5 +57,8 @@ router.use('/sourcetype', sourcetype)
 router.use('/agencycodes', agencycodes)
 router.use('/employee', employee)
 router.use('/responsetype', responsetype)
-
+router.use('/program', program)
+router.use('/course', course)
+router.use('/batch', Batch)
+router.use('/courseDuration', CourseDuration)
 export default router
