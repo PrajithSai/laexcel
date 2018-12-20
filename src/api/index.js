@@ -12,6 +12,7 @@ import buildings from './building'
 import sourcetype from './soruceType'
 import agencycodes from './agencyCode'
 import employee from './employee'
+import responsetype from './responseType'
 
 const router = new Router()
 
@@ -51,5 +52,6 @@ router.use('/buildings', buildings)
 router.use('/sourcetype', sourcetype)
 router.use('/agencycodes', agencycodes)
 router.use('/employee', employee)
+router.use('/responsetype', responsetype)
 
 export default router

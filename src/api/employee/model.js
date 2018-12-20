@@ -2,6 +2,9 @@ import mongoose, { Schema } from 'mongoose'
 
 const employeeSchema = new Schema(
   {
+    userId: {
+      type: String
+    },
     name: {
       type: String
     },

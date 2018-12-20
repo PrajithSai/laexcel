@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { success, notFound } from '../../services/response/'
 import { PreAdmission } from '.'
+import Employee from '../employee/model'
 
 export const create = ({ bodymen: { body } }, res, next) => {
   body.dateOfEnquiry = body.others.dateOfEnquiry
@@ -87,7 +88,7 @@ export const basedOnEnquiryDate = (req, res, next) => {
             resp.length === 0
               ? 'No unassigned enquiries found between given dates!'
               : `Found ${resp.length} enquiries!`,
-          result: resp
+          result: resp.map(result => result.view())
         })
       }
     }
@@ -124,4 +125,43 @@ export const acceptOrRejectEnquiry = (
     .then(notFound(res))
     .then(success(res))
     .catch(next)
+}
+
+export const fetchAdmissionsByEmp = (req, res, next) => {
+  Employee.findOne({ userId: req.params.userId }, (err, result) => {
+    if (err) {
+      return notFound(res)
+    } else {
+      req.body.assignedTo = result._id
+      next()
+    }
+  })
+}
+
+export const fetchAssignedEnquiries = (req, res, next) => {
+  PreAdmission.find(
+    {
+      'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
+      Program: req.body.program,
+      assignedTo: { $ne: null }
+    },
+    (err, resp) => {
+      if (err) {
+        return res.send({
+          error: true,
+          message: 'Unable to fetch enquiries at the moment',
+          result: []
+        })
+      } else {
+        res.send({
+          error: resp.length === 0,
+          message:
+            resp.length === 0
+              ? 'No unassigned enquiries found between given dates!'
+              : `Found ${resp.length} enquiries!`,
+          result: resp.map(result => result.view())
+        })
+      }
+    }
+  )
 }

@@ -1,35 +1,12 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import {
-  create,
-  index,
-  show,
-  update,
-  destroy,
-  bulkUpload,
-  basedOnEnquiryDate,
-  allocateEnquiriesToEmp,
-  acceptOrRejectEnquiry,
-  fetchAdmissionsByEmp,
-  fetchAssignedEnquiries
-} from './controller'
+import { create, index, show, update, destroy } from './controller'
 import { schema } from './model'
-export PreAdmission, { schema } from './model'
+export ResponseType, { schema } from './model'
 
 const router = new Router()
-const {
-  sourceType,
-  agencyCode,
-  others,
-  type,
-  Program,
-  StudentName,
-  Email,
-  ContactNumber,
-  responseType,
-  remarks
-} = schema.tree
+const { responseName, responseCode, createdBy } = schema.tree
 
 /**
  * @api {post} /projects Create projects
@@ -41,22 +18,7 @@ const {
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.post(
-  '/',
-  body({
-    sourceType,
-    agencyCode,
-    others,
-    type,
-    Program,
-    StudentName,
-    Email,
-    ContactNumber
-  }),
-  create
-)
-
-router.post('/upload', bulkUpload)
+router.post('/', body({ responseName, responseCode, createdBy }), create)
 
 /**
  * @api {get} /projects Retrieve country
@@ -88,22 +50,7 @@ router.get('/:id', show)
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Projects not found.
  */
-router.put(
-  '/:id',
-  body({
-    sourceType,
-    agencyCode,
-    others,
-    type,
-    Program,
-    StudentName,
-    Email,
-    ContactNumber,
-    responseType,
-    remarks
-  }),
-  update
-)
+router.put('/:id', body({ responseName, responseCode, createdBy }), update)
 
 /**
  * @api {delete} /projects/:id Delete projects
@@ -113,15 +60,5 @@ router.put(
  * @apiError 404 Projects not found.
  */
 router.delete('/:id', destroy)
-
-router.post('/basedOnEquiryDate', basedOnEnquiryDate)
-
-router.post('/allocate', allocateEnquiriesToEmp)
-
-router.post('/employee', acceptOrRejectEnquiry)
-
-router.post('/:userId/employee', fetchAdmissionsByEmp, basedOnEnquiryDate)
-
-router.post('/assigned', fetchAssignedEnquiries)
 
 export default router

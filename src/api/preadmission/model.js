@@ -41,6 +41,12 @@ const preAdmissionSchema = new Schema(
     },
     status: {
       type: String
+    },
+    responseType: {
+      type: String
+    },
+    remarks: {
+      type: String
     }
   },
   {
@@ -62,6 +68,7 @@ preAdmissionSchema.methods = {
       StudentName: this.StudentName,
       Email: this.Email,
       ContactNumber: this.ContactNumber,
+      isAcceptedByEmp: this.isAcceptedByEmp,
       createdBy: this.createdBy,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
