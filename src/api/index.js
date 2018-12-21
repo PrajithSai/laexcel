@@ -17,7 +17,7 @@ import program from './program'
 import course from './course'
 import Batch from './batch'
 import CourseDuration from './courseDuration'
-import feeCode from './feecode'
+import feeCode from './feeCode'
 import gstRates from './gstRates'
 import feestructure from './feeStructure';
 
