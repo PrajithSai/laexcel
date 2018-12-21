@@ -17,6 +17,9 @@ import program from './program'
 import course from './course'
 import Batch from './batch'
 import CourseDuration from './courseDuration'
+import feeCode from './feecode'
+import gstRates from './gstRates'
+import feestructure from './feeStructure';
 
 const router = new Router()
 
@@ -61,4 +64,7 @@ router.use('/program', program)
 router.use('/course', course)
 router.use('/batch', Batch)
 router.use('/courseDuration', CourseDuration)
+router.use('/feecode', feeCode);
+router.use('/gstRates', gstRates)
+router.use('/feestructure', feestructure)
 export default router
