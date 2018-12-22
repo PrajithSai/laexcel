@@ -12,6 +12,11 @@ const batchSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'course'
   },
+  feeStructure: [new Schema({ type: {
+    type: String
+  }, amount: {
+    type: String
+  }})]
 });
 
 const model = mongoose.model('feestructure', batchSchema);

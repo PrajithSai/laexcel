@@ -4,6 +4,7 @@ import { success, notFound } from '../../services/response/'
 export const create = (req, res, next) => {
   FeeStructure.create(req.body, (err, resp) => {
     if (err) {
+      console.log(err);
     } else {
       show(req, res, next)
     }
