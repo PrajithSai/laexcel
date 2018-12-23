@@ -68,31 +68,35 @@ export const destroy = ({ params }, res, next) =>
     .catch(next)
 
 export const basedOnEnquiryDate = (req, res, next) => {
-  PreAdmission.find(
-    {
-      'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
-      Program: req.body.program,
-      assignedTo: { $eq: req.body.assignedTo ? req.body.assignedTo : null }
-    },
-    (err, resp) => {
-      if (err) {
-        return res.send({
-          error: true,
-          message: 'Unable to fetch enquiries at the moment',
-          result: []
-        })
-      } else {
-        res.send({
-          error: resp.length === 0,
-          message:
-            resp.length === 0
-              ? 'No unassigned enquiries found between given dates!'
-              : `Found ${resp.length} enquiries!`,
-          result: resp.map(result => result.view())
-        })
-      }
+  const query = {
+    'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
+    Program: req.body.program,
+    assignedTo: { $eq: req.body.assignedTo ? req.body.assignedTo : null }
+  }
+  if (req.body.isAcceptedByEmp) {
+    query.isAcceptedByEmp = true
+  }
+  if (req.body.responseType) {
+    query.responseType = req.body.responseType
+  }
+  PreAdmission.find(query, (err, resp) => {
+    if (err) {
+      return res.send({
+        error: true,
+        message: 'Unable to fetch enquiries at the moment',
+        result: []
+      })
+    } else {
+      res.send({
+        error: resp.length === 0,
+        message:
+          resp.length === 0
+            ? 'No unassigned enquiries found between given dates!'
+            : `Found ${resp.length} enquiries!`,
+        result: resp.map(result => result.view())
+      })
     }
-  )
+  })
 }
 
 export const allocateEnquiriesToEmp = (
@@ -139,29 +143,27 @@ export const fetchAdmissionsByEmp = (req, res, next) => {
 }
 
 export const fetchAssignedEnquiries = (req, res, next) => {
-  PreAdmission.find(
-    {
-      'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
-      Program: req.body.program,
-      assignedTo: { $ne: null }
-    },
-    (err, resp) => {
-      if (err) {
-        return res.send({
-          error: true,
-          message: 'Unable to fetch enquiries at the moment',
-          result: []
-        })
-      } else {
-        res.send({
-          error: resp.length === 0,
-          message:
-            resp.length === 0
-              ? 'No unassigned enquiries found between given dates!'
-              : `Found ${resp.length} enquiries!`,
-          result: resp.map(result => result.view())
-        })
-      }
+  const query = {
+    'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
+    Program: req.body.program,
+    assignedTo: { $ne: null }
+  }
+  PreAdmission.find(query, (err, resp) => {
+    if (err) {
+      return res.send({
+        error: true,
+        message: 'Unable to fetch enquiries at the moment',
+        result: []
+      })
+    } else {
+      res.send({
+        error: resp.length === 0,
+        message:
+          resp.length === 0
+            ? 'No unassigned enquiries found between given dates!'
+            : `Found ${resp.length} enquiries!`,
+        result: resp.map(result => result.view())
+      })
     }
-  )
+  })
 }
