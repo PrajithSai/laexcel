@@ -69,6 +69,8 @@ preAdmissionSchema.methods = {
       Email: this.Email,
       ContactNumber: this.ContactNumber,
       isAcceptedByEmp: this.isAcceptedByEmp,
+      responseType: this.responseType,
+      remarks: this.remarks,
       createdBy: this.createdBy,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
