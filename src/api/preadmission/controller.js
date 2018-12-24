@@ -106,7 +106,7 @@ export const allocateEnquiriesToEmp = (
 ) =>
   PreAdmission.updateMany(
     { _id: { $in: selection } },
-    { $set: { assignedTo: employee } }
+    { $set: { assignedTo: employee, isAcceptedByEmp: null } }
   )
     .then(notFound(res))
     .then(success(res))
@@ -147,6 +147,9 @@ export const fetchAssignedEnquiries = (req, res, next) => {
     'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
     Program: req.body.program,
     assignedTo: { $ne: null }
+  }
+  if (req.body.responseType) {
+    query.responseType = req.body.responseType
   }
   PreAdmission.find(query, (err, resp) => {
     if (err) {
