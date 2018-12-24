@@ -20,6 +20,7 @@ import CourseDuration from './courseDuration'
 import feeCode from './feeCode'
 import gstRates from './gstRates'
 import feestructure from './feeStructure';
+import mastergstrates from './masterGstRates';
 
 const router = new Router()
 
@@ -67,4 +68,6 @@ router.use('/courseDuration', CourseDuration)
 router.use('/feecode', feeCode);
 router.use('/gstRates', gstRates)
 router.use('/feestructure', feestructure)
+router.use('/mastergstrates', mastergstrates)
+
 export default router

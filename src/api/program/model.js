@@ -11,7 +11,13 @@ const ProgramSchema = new Schema({
     type: String
   },
   rateOfGst: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'mastergstrates'
+  },
+  status: {
+    type: String,
+    default: 'Active',
+    enum: ['Active', 'inActive']
   }
 });
 

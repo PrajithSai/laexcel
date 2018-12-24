@@ -11,7 +11,7 @@ export const create = (req, res, next) => {
 }
 
 export const show = (req, res, next) => {
-  Employee.find({}, (err, resp) => {
+  Employee.find({ status: 'Active' }, (err, resp) => {
     if (err) {
     } else {
       res.send({
@@ -19,6 +19,25 @@ export const show = (req, res, next) => {
         message: 'Registered successuflly',
         result: resp
       })
+    }
+  })
+}
+
+export const update = (req, res, next) => {
+  Employee.findOneAndUpdate({ '_id': req.params.id }, req.body, { new: true, upsert: false }, (err, resp) => {
+    if (err) {
+    } else {
+      show(req, res, next)
+    }
+  })
+}
+
+export const dropEmployee = (req, res, next) => {
+  Employee.update({ '_id': req.params.id }, { $set: { status: 'inActive' }}, (err, resp) => {
+    if (err) {
+
+    } else {
+      show(req, res, next)
     }
   })
 }
