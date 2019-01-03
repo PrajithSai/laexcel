@@ -69,7 +69,7 @@ export const destroy = ({ params }, res, next) =>
 
 export const basedOnEnquiryDate = (req, res, next) => {
   const query = {
-    'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
+    createdAt: { $gte: req.body.from, $lte: req.body.to },
     Program: req.body.program,
     assignedTo: { $eq: req.body.assignedTo ? req.body.assignedTo : null }
   }
@@ -144,7 +144,7 @@ export const fetchAdmissionsByEmp = (req, res, next) => {
 
 export const fetchAssignedEnquiries = (req, res, next) => {
   const query = {
-    'others.dateOfEnquiry': { $gte: req.body.from, $lte: req.body.to },
+    createdAt: { $gte: req.body.from, $lte: req.body.to },
     Program: req.body.program,
     assignedTo: { $ne: null }
   }
@@ -169,4 +169,91 @@ export const fetchAssignedEnquiries = (req, res, next) => {
       })
     }
   })
+}
+
+export const fetchEnquiresByStudent = (req, res, next) => {
+  const query = {}
+  const { name, email, number } = req.body
+  if (name !== '') {
+    query.StudentName = name
+  }
+  if (email !== '') {
+    query.Email = email
+  }
+  if (number !== '') {
+    query.ContactNumber = number
+  }
+  PreAdmission.find(query, (err, resp) => {
+    if (err) {
+      return res.send({
+        error: true,
+        message: 'Unable to fetch enquiries at the moment',
+        payload: []
+      })
+    } else {
+      res.send({
+        error: resp.length === 0,
+        message:
+          resp.length === 0
+            ? 'No enquiries found for the given information!'
+            : `Found ${resp.length} enquiries!`,
+        payload: resp.map(result => result.view())
+      })
+    }
+  })
+}
+
+export const updateResponseAndEnquiredOn = (req, res, next) => {
+  PreAdmission.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        responseType: req.body.responseType,
+        createdAt: req.body.dateOfEnquiry // need clarification from murali regarding enquiredOn field
+      }
+    },
+    { new: true },
+    (err, resp) => {
+      if (err) {
+        return res.send({
+          error: true,
+          message: 'Unable to update at the moment',
+          payload: []
+        })
+      } else {
+        res.send({
+          error: false,
+          message: `Response type and enquiry date captured successfully!`,
+          payload: resp.view()
+        })
+      }
+    }
+  )
+}
+
+export const setDemoClassDate = (req, res, next) => {
+  PreAdmission.updateMany(
+    { _id: req.body.selection },
+    {
+      $set: {
+        demoClassDate: req.body.demoClassDate
+      }
+    },
+    { new: true },
+    (err, resp) => {
+      if (err) {
+        return res.send({
+          error: true,
+          message: 'Unable to update at the moment',
+          payload: []
+        })
+      } else {
+        res.send({
+          error: false,
+          message: `Demo class date captured successfully!`,
+          payload: resp
+        })
+      }
+    }
+  )
 }

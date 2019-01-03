@@ -12,7 +12,10 @@ import {
   allocateEnquiriesToEmp,
   acceptOrRejectEnquiry,
   fetchAdmissionsByEmp,
-  fetchAssignedEnquiries
+  fetchAssignedEnquiries,
+  fetchEnquiresByStudent,
+  updateResponseAndEnquiredOn,
+  setDemoClassDate
 } from './controller'
 import { schema } from './model'
 export PreAdmission, { schema } from './model'
@@ -123,5 +126,11 @@ router.post('/employee', acceptOrRejectEnquiry)
 router.post('/:userId/employee', fetchAdmissionsByEmp, basedOnEnquiryDate)
 
 router.post('/assigned', fetchAssignedEnquiries)
+
+router.post('/student', fetchEnquiresByStudent)
+
+router.put('/:id/clarifications', updateResponseAndEnquiredOn)
+
+router.post('/demoClass', setDemoClassDate)
 
 export default router

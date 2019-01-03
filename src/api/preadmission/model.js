@@ -47,6 +47,9 @@ const preAdmissionSchema = new Schema(
     },
     remarks: {
       type: String
+    },
+    demoClassDate: {
+      type: String
     }
   },
   {
@@ -73,7 +76,8 @@ preAdmissionSchema.methods = {
       remarks: this.remarks,
       createdBy: this.createdBy,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
+      demoClassDate: this.demoClassDate
     }
 
     return full
