@@ -14,6 +14,11 @@ const courseSchema = new Schema({
   course: {
     type: Schema.Types.ObjectId,
     ref: 'course'
+  },
+  status: {
+    type: String,
+    default: 'Active',
+    enum: ['Active', 'inActive']
   }
 });
 

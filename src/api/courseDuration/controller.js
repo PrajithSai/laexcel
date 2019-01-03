@@ -22,3 +22,22 @@ export const show = (req, res, next) => {
     }
   })
 }
+
+export const update = (req, res, next) => {
+  Program.findOneAndUpdate({ '_id': req.params.id }, req.body, { new: true, upsert: false }, (err, resp) => {
+    if (err) {
+    } else {
+      show(req, res, next)
+    }
+  })
+}
+
+export const dropEmployee = (req, res, next) => {
+  Program.update({ '_id': req.params.id }, { $set: { status: 'inActive' }}, (err, resp) => {
+    if (err) {
+
+    } else {
+      show(req, res, next)
+    }
+  })
+}
