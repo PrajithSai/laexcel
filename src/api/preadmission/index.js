@@ -138,7 +138,7 @@ router.post('/demoClass', setDemoClassDate)
 
 router.get('/assigned/all', fetchAllAssignedEnquiries)
 
-router.get('/:id/logs', fetchLogsById)
+// router.get('/:id/logs', fetchLogsById)
 
 router.put('/:id/employee', updateResponseTypeAndRemarks)
 
