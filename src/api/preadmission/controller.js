@@ -88,10 +88,10 @@ export const basedOnEnquiryDate = (req, res, next) => {
       })
     } else {
       res.send({
-        error: resp.length === 0,
+        error: false,
         message:
           resp.length === 0
-            ? 'No unassigned enquiries found between given dates!'
+            ? 'No enquiries found!'
             : `Found ${resp.length} enquiries!`,
         result: resp.map(result => result.view())
       })
@@ -112,20 +112,21 @@ export const allocateEnquiriesToEmp = (
     .then(success(res))
     .catch(next)
 
-export const acceptOrRejectEnquiry = (
-  { body: { selection, status } },
-  res,
-  next
-) => {
-  const update = {}
-  if (status.toLowerCase() === 'return') {
-    update.assignedTo = null
-    update.isAcceptedByEmp = null
+export const acceptOrRejectEnquiry = (req, res, next) => {
+  const { selection, status } = req.body
+  const isAcceptedByEmp = status.toLowerCase() === 'accept'
+  const update = {
+    $set: { isAcceptedByEmp }
   }
-  if (status.toLowerCase() === 'accept') {
-    update.isAcceptedByEmp = true
+  if (!isAcceptedByEmp) {
+    update['$push'] = {
+      comments: {
+        // by: req.user._id, have to fetch user from token and insert user Id here
+        comment: req.body.comment
+      }
+    }
   }
-  return PreAdmission.updateMany({ _id: { $in: selection } }, { $set: update })
+  return PreAdmission.updateMany({ _id: { $in: selection } }, update)
     .then(notFound(res))
     .then(success(res))
     .catch(next)
@@ -163,7 +164,31 @@ export const fetchAssignedEnquiries = (req, res, next) => {
         error: resp.length === 0,
         message:
           resp.length === 0
-            ? 'No unassigned enquiries found between given dates!'
+            ? 'No enquiries found!'
+            : `Found ${resp.length} enquiries!`,
+        result: resp.map(result => result.view())
+      })
+    }
+  })
+}
+
+export const fetchAllAssignedEnquiries = (req, res, next) => {
+  const query = {
+    assignedTo: { $ne: null }
+  }
+  PreAdmission.find(query, (err, resp) => {
+    if (err) {
+      return res.send({
+        error: true,
+        message: 'Unable to fetch enquiries at the moment',
+        result: []
+      })
+    } else {
+      res.send({
+        error: resp.length === 0,
+        message:
+          resp.length === 0
+            ? 'No enquiries found!'
             : `Found ${resp.length} enquiries!`,
         result: resp.map(result => result.view())
       })
@@ -195,7 +220,7 @@ export const fetchEnquiresByStudent = (req, res, next) => {
         error: resp.length === 0,
         message:
           resp.length === 0
-            ? 'No enquiries found for the given information!'
+            ? 'No enquiries found!'
             : `Found ${resp.length} enquiries!`,
         payload: resp.map(result => result.view())
       })

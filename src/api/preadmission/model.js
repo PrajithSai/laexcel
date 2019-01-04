@@ -50,7 +50,17 @@ const preAdmissionSchema = new Schema(
     },
     demoClassDate: {
       type: String
-    }
+    },
+    comments: [
+      {
+        by: {
+          type: String
+        },
+        comment: {
+          type: String
+        }
+      }
+    ]
   },
   {
     timestamps: true
@@ -77,7 +87,8 @@ preAdmissionSchema.methods = {
       createdBy: this.createdBy,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      demoClassDate: this.demoClassDate
+      demoClassDate: this.demoClassDate,
+      comments: this.comments
     }
 
     return full

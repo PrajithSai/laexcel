@@ -15,7 +15,8 @@ import {
   fetchAssignedEnquiries,
   fetchEnquiresByStudent,
   updateResponseAndEnquiredOn,
-  setDemoClassDate
+  setDemoClassDate,
+  fetchAllAssignedEnquiries
 } from './controller'
 import { schema } from './model'
 export PreAdmission, { schema } from './model'
@@ -132,5 +133,7 @@ router.post('/student', fetchEnquiresByStudent)
 router.put('/:id/clarifications', updateResponseAndEnquiredOn)
 
 router.post('/demoClass', setDemoClassDate)
+
+router.get('/assigned/all', fetchAllAssignedEnquiries)
 
 export default router
