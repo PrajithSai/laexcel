@@ -161,7 +161,7 @@ export const fetchAssignedEnquiries = (req, res, next) => {
       })
     } else {
       res.send({
-        error: resp.length === 0,
+        error: false,
         message:
           resp.length === 0
             ? 'No enquiries found!'
@@ -185,7 +185,7 @@ export const fetchAllAssignedEnquiries = (req, res, next) => {
       })
     } else {
       res.send({
-        error: resp.length === 0,
+        error: false,
         message:
           resp.length === 0
             ? 'No enquiries found!'
@@ -217,7 +217,7 @@ export const fetchEnquiresByStudent = (req, res, next) => {
       })
     } else {
       res.send({
-        error: resp.length === 0,
+        error: false,
         message:
           resp.length === 0
             ? 'No enquiries found!'
@@ -277,6 +277,57 @@ export const setDemoClassDate = (req, res, next) => {
           error: false,
           message: `Demo class date captured successfully!`,
           payload: resp
+        })
+      }
+    }
+  )
+}
+
+export const fetchLogsById = (req, res, next) => {
+  PreAdmission.findOne({ _id: req.params.id }, (err, resp) => {
+    if (err) {
+      return res.send({
+        error: true,
+        message: 'Unable to fetch enquiries at the moment',
+        result: []
+      })
+    } else {
+      const logs = resp.viewLogs()
+      res.send({
+        error: false,
+        message:
+          resp.length === 0
+            ? 'No logs found!'
+            : `Found ${logs.logs.length} logs!`,
+        result: logs
+      })
+    }
+  })
+}
+
+export const updateResponseTypeAndRemarks = (req, res) => {
+  PreAdmission.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        responseType: req.body.responseType,
+        remarks: req.body.remarks
+      },
+      $push: { logs: req.body }
+    },
+    { new: true },
+    (err, resp) => {
+      if (err) {
+        return res.send({
+          error: true,
+          message: 'Unable to update at the moment',
+          payload: []
+        })
+      } else {
+        res.send({
+          error: false,
+          message: `Response type and enquiry date captured successfully!`,
+          payload: resp.view()
         })
       }
     }

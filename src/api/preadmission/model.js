@@ -60,6 +60,22 @@ const preAdmissionSchema = new Schema(
           type: String
         }
       }
+    ],
+    logs: [
+      {
+        insertedDate: {
+          type: String
+        },
+        responseType: {
+          type: String
+        },
+        remarks: {
+          type: String
+        },
+        userId: {
+          type: String
+        }
+      }
     ]
   },
   {
@@ -97,6 +113,15 @@ preAdmissionSchema.methods = {
         // add properties for a full view
       }
       : view
+  },
+
+  viewLogs () {
+    const view = {
+      id: this.id,
+      _id: this.id,
+      logs: this.logs
+    }
+    return view
   }
 }
 
