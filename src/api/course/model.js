@@ -10,6 +10,11 @@ const batchSchema = new Schema({
   program: {
     type: Schema.Types.ObjectId,
     ref: 'program'
+  },
+  status: {
+    type: String,
+    default: 'Active',
+    enum: ['Active', 'inActive']
   }
 });
 
