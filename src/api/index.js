@@ -19,8 +19,9 @@ import Batch from './batch'
 import CourseDuration from './courseDuration'
 import feeCode from './feeCode'
 import gstRates from './gstRates'
-import feestructure from './feeStructure';
-import mastergstrates from './masterGstRates';
+import feestructure from './feeStructure'
+import mastergstrates from './masterGstRates'
+import academicyear from './academicYear'
 
 const router = new Router()
 
@@ -65,9 +66,10 @@ router.use('/program', program)
 router.use('/course', course)
 router.use('/batch', Batch)
 router.use('/courseDuration', CourseDuration)
-router.use('/feecode', feeCode);
+router.use('/feecode', feeCode)
 router.use('/gstRates', gstRates)
 router.use('/feestructure', feestructure)
 router.use('/mastergstrates', mastergstrates)
+router.use('/academicyear', academicyear)
 
 export default router
