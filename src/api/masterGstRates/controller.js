@@ -11,7 +11,7 @@ export const create = (req, res, next) => {
 }
 
 export const show = (req, res, next) => {
-    MasterGstRates.find({}, (err, resp) => {
+    MasterGstRates.find({ status: 'Active' }, (err, resp) => {
     if (err) {
     } else {
       res.send({
@@ -26,6 +26,16 @@ export const show = (req, res, next) => {
 export const update = (req, res, next) => {
     MasterGstRates.findOneAndUpdate({ '_id': req.params.id }, req.body, { new: true, upsert: false }, (err, resp) => {
     if (err) {
+    } else {
+      show(req, res, next)
+    }
+  })
+}
+
+export const dropMasterGstRates = (req, res, next) => {
+  MasterGstRates.update({ '_id': req.params.id }, { $set: { status: 'inActive' }}, (err, resp) => {
+    if (err) {
+
     } else {
       show(req, res, next)
     }

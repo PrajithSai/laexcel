@@ -6,6 +6,11 @@ const batchSchema = new Schema({
   },
   code: {
     type: String
+  },
+  status: {
+    type: String,
+    default: 'Active',
+    enum: ['Active', 'inActive']
   }
 });
 

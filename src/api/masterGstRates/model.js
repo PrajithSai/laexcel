@@ -12,6 +12,11 @@ const masterGstRateSchema = new Schema({
     },
     igst: {
       type: String
+    },
+    status: {
+      type: String,
+      default: 'Active',
+      enum: ['Active', 'inActive']
     }
 }, { timestamps: true });
 

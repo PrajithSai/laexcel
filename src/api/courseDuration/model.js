@@ -23,6 +23,11 @@ const batchSchema = new Schema({
   },
   toDate: {
     type: Date
+  },
+  status: {
+    type: String,
+    default: 'Active',
+    enum: ['Active', 'inActive']
   }
 });
 
