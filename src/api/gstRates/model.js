@@ -11,6 +11,11 @@ const batchSchema = new Schema({
   },
   gstRegisterationNumber: {
     type: String
+  },
+  status: {
+    type: String,
+    default: 'Active',
+    enum: ['Active', 'inActive']
   }
 });
 
