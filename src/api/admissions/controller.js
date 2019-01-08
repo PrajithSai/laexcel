@@ -1,12 +1,23 @@
-import _ from 'lodash'
-import { success, notFound } from '../../services/response/'
-import { Admissions } from './model'
+import _ from 'lodash';
+import { success, notFound } from '../../services/response/';
+import Admissions from './model';
+import Branches from '../branches/model';
 
 export const create = ({ bodymen: { body } }, res, next) => {
-  Admissions.create(body)
-  .then(admission => admission ? admission.view() : null)
-  .then(success(res, 201, `Admission Successfull`))
-  .catch(next)
+  Branches.findById(req.body.branch, (err, branch) => {
+    if (err) {
+      res.send(err);
+    } else if (branch) {
+      body.createdBy = req.body.user.id;
+      body.branchCode = branch.code;
+      Admissions.create(body)
+      .then(admission => admission ? admission.view() : null)
+      .then(success(res, 201, `Admission Successfull`))
+      .catch(next)
+    } else {
+      res.send({ error: true, message: 'Invalid Branch' });
+    }
+  })
 }
 
 export const show = ({ params }, res, next) =>

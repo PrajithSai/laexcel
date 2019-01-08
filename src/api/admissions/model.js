@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
+import Counter from './CounterModel';
 
 const admissionSchema = new Schema(
   {
@@ -8,6 +9,7 @@ const admissionSchema = new Schema(
     },
     admissionNumber: {
       type: String,       //we be prepare server side
+      trim: true,
       required: true
     },
     organization: {
@@ -27,13 +29,16 @@ const admissionSchema = new Schema(
     },
     firstName: {
       type: String,
+      trim: true,
       required: true
     },
     middleName: {
-      type: String
+      type: String,
+      trim: true
     },
     lastName: {
       type: String,
+      trim: true,
       required: true
     },
     dob: {
@@ -42,50 +47,63 @@ const admissionSchema = new Schema(
     },
     contactNumber: {
       type: Number,
-      required: true
+      required: true,
+      maxlength: 10
     },
     email: {
       type: String,
+      trim: true,
       required: true
     },
     fatherFirstName: {
       type: String,
+      trim: true,
       required: true
     },
     fatherMiddleName: {
-      type: String
+      type: String,
+      trim: true
     },
     fatherLastName: {
       type: String,
+      trim: true,
       required: true
     },
     fatherOccupation: {
-      type: String
+      type: String,
+      trim: true
     },
     fatherContactNumber: {
       type: Number,
-      required: true
+      required: true,
+      maxlength: 10
     },
     motherName: {
-      type: String
+      type: String,
+      trim: true
     },
     motherOccupation: {
-      type: String
+      type: String,
+      trim: true
     },
     siblingName: {
-      type: String
+      type: String,
+      trim: true
     },
     qualification: {
-      type: String
+      type: String,
+      trim: true
     },
     institute: {
-      type: String
+      type: String,
+      trim: true
     },
     others: {
       type: Object
     },
     category: {
       type: String,
+      trim: true,
       required: true
     },
     isHostelResidant: {
@@ -93,10 +111,12 @@ const admissionSchema = new Schema(
       default: false
     },
     hostelName: {
-      type: String
+      type: String,
+      trim: true
     },
     hostelContact: {
-      type: Number
+      type: Number,
+      maxlength: 10
     },
     presentAddress: {
       line1: String,
@@ -135,7 +155,8 @@ const admissionSchema = new Schema(
       default: false
     },
     employerName: {
-      type: String
+      type: String,
+      trim: true
     },
     upscAttempted: {
       type: Boolean,
@@ -145,7 +166,8 @@ const admissionSchema = new Schema(
       type: Number
     },
     particulars: {
-      type: String
+      type: String,
+      trim: true
     },
     program: {
       type: Schema.Types.ObjectId,
@@ -197,6 +219,19 @@ const admissionSchema = new Schema(
     timestamps: true
   }
 )
+
+admissionSchema.pre('save', function(next) {
+  Counter.findByIdAndUpdate({
+    branch: this.branch
+  }, { $inc: { seq: 1} }, { upsert: true, new: true }, (err, counter) => {
+      if(err){
+        return next(err);
+      } else {
+        this.admissionNumber = `${this.branchCode}-${("000" + counter.seq).slice(-4)}`;
+      }
+      next();
+  });
+});
 
 admissionSchema.methods = {
   view (full) {
