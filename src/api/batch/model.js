@@ -9,15 +9,15 @@ const courseSchema = new Schema({
   },
   program: {
     type: Schema.Types.ObjectId,
-    ref: 'program'
+    ref: 'Programs'
   },
   course: {
     type: Schema.Types.ObjectId,
-    ref: 'course'
+    ref: 'Courses'
   }
 });
 
-const model = mongoose.model('batch', courseSchema);
+const model = mongoose.model('Batches', courseSchema);
 
 const schema = model.schema;
 

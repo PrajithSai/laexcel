@@ -9,11 +9,11 @@ const batchSchema = new Schema({
   },
   program: {
     type: Schema.Types.ObjectId,
-    ref: 'program'
+    ref: 'Programs'
   }
 });
 
-const model = mongoose.model('course', batchSchema);
+const model = mongoose.model('Courses', batchSchema);
 
 const schema = model.schema;
 

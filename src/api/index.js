@@ -23,6 +23,7 @@ import feestructure from './feeStructure'
 import mastergstrates from './masterGstRates'
 import academicyear from './academicYear'
 import logos from './logos';
+import admissions from './admissions';
 
 const router = new Router()
 
@@ -58,6 +59,7 @@ router.use('/organizations', organizations)
 router.use('/campuses', campus)
 router.use('/room', room)
 router.use('/preadmission', preadmission)
+router.use('/admissions', admissions)
 router.use('/buildings', buildings)
 router.use('/sourcetype', sourcetype)
 router.use('/agencycodes', agencycodes)

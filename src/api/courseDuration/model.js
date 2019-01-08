@@ -9,11 +9,11 @@ const batchSchema = new Schema({
   },
   batch: {
     type: Schema.Types.ObjectId,
-    ref: 'batch'
+    ref: 'Batches'
   },
   courseName: {
     type: Schema.Types.ObjectId,
-    ref: 'course'
+    ref: 'Courses'
   },
   months: {
     type: String

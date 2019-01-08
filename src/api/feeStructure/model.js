@@ -10,7 +10,7 @@ const batchSchema = new Schema({
   },
   courseName: {
     type: Schema.Types.ObjectId,
-    ref: 'course'
+    ref: 'Courses'
   },
   feeStructure: [new Schema({ type: {
     type: String

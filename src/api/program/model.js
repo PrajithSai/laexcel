@@ -21,7 +21,7 @@ const ProgramSchema = new Schema({
   }
 });
 
-const model = mongoose.model('program', ProgramSchema);
+const model = mongoose.model('Programs', ProgramSchema);
 
 const schema = model.schema;
 
