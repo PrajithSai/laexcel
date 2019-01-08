@@ -27,6 +27,10 @@ const admissionSchema = new Schema(
       required: true,
       ref: 'Branches'
     },
+    branchCode: {
+      type: String,
+      required: true
+    },
     firstName: {
       type: String,
       trim: true,
@@ -221,7 +225,7 @@ const admissionSchema = new Schema(
 )
 
 admissionSchema.pre('save', function(next) {
-  Counter.findByIdAndUpdate({
+  Counter.findOneAndUpdate({
     branch: this.branch
   }, { $inc: { seq: 1} }, { upsert: true, new: true }, (err, counter) => {
       if(err){
@@ -235,9 +239,7 @@ admissionSchema.pre('save', function(next) {
 
 admissionSchema.methods = {
   view (full) {
-    const view = {
-      ...this, id: this.id
-    }
+    const view = this;
     return full
       ? {
         ...view

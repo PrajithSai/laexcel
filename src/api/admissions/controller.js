@@ -3,14 +3,14 @@ import { success, notFound } from '../../services/response/';
 import Admissions from './model';
 import Branches from '../branches/model';
 
-export const create = ({ bodymen: { body } }, res, next) => {
+export const create = (req, res, next) => {
   Branches.findById(req.body.branch, (err, branch) => {
     if (err) {
       res.send(err);
     } else if (branch) {
-      body.createdBy = req.body.user.id;
-      body.branchCode = branch.code;
-      Admissions.create(body)
+      req.body.createdBy = req.body.user.id;
+      req.body.branchCode = branch.code;
+      Admissions.create(req.body)
       .then(admission => admission ? admission.view() : null)
       .then(success(res, 201, `Admission Successfull`))
       .catch(next)
