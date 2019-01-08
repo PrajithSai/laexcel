@@ -10,17 +10,24 @@ import * as googleService from '../google'
 import User, { schema } from '../../api/user/model'
 
 export const password = () => (req, res, next) =>
-  passport.authenticate('password', { session: false }, (err, user, info) => {
-    if (err && err.param) {
-      return res.status(400).json(err)
-    } else if (err || !user) {
-      return res.status(401).end()
-    }
-    req.logIn(user, { session: false }, (err) => {
-      if (err) return res.status(401).end()
-      next()
-    })
-  })(req, res, next)
+passport.authenticate('token', { session: false }, (err, user, info) => {
+  if (
+    err ||
+    (required && !user)
+  ) {
+    return res.status(401).end()
+  }
+  // req.logIn(user, { session: false }, err => {
+  //   if (err) return res.status(401).end()
+  //   next()
+  // })
+  req.body.user = {
+    id: user['_id'],
+    name: user.fullname,
+    browser: user.browser
+  };
+  next();
+})(req, res, next)
 
 export const facebook = () =>
   passport.authenticate('facebook', { session: false })
