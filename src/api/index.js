@@ -22,6 +22,7 @@ import gstRates from './gstRates'
 import feestructure from './feeStructure'
 import mastergstrates from './masterGstRates'
 import academicyear from './academicYear'
+import logos from './logos';
 
 const router = new Router()
 
@@ -71,5 +72,6 @@ router.use('/gstRates', gstRates)
 router.use('/feestructure', feestructure)
 router.use('/mastergstrates', mastergstrates)
 router.use('/academicyear', academicyear)
+router.use('/logos', logos)
 
 export default router

@@ -12,7 +12,7 @@ export const create = (req, res, next) => {
 }
 
 export const show = (req, res, next) => {
-  FeeStructure.find({}, (err, resp) => {
+  FeeStructure.find({ status: 'Active' }, (err, resp) => {
     if (err) {
     } else {
       res.send({
@@ -20,6 +20,25 @@ export const show = (req, res, next) => {
         message: 'Registered successuflly',
         result: resp
       })
+    }
+  })
+}
+
+export const update = (req, res, next) => {
+  FeeStructure.findOneAndUpdate({ '_id': req.params.id }, req.body, { new: true, upsert: false }, (err, resp) => {
+    if (err) {
+    } else {
+      show(req, res, next)
+    }
+  })
+}
+
+export const dropFeeStructure = (req, res, next) => {
+  FeeStructure.update({ '_id': req.params.id }, { $set: { status: 'inActive' }}, (err, resp) => {
+    if (err) {
+
+    } else {
+      show(req, res, next)
     }
   })
 }

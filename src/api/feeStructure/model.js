@@ -14,9 +14,16 @@ const batchSchema = new Schema({
   },
   feeStructure: [new Schema({ type: {
     type: String
-  }, amount: {
+  },
+  amount: {
     type: String
-  }})]
+  }
+  })],
+  status: { 
+    type: String,
+    default: 'Active',
+    enum: ['Active', 'inActive']
+  }
 });
 
 const model = mongoose.model('feestructure', batchSchema);
