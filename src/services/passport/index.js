@@ -10,23 +10,16 @@ import * as googleService from '../google'
 import User, { schema } from '../../api/user/model'
 
 export const password = () => (req, res, next) =>
-passport.authenticate('token', { session: false }, (err, user, info) => {
-  if (
-    err ||
-    (required && !user)
-  ) {
+passport.authenticate('password', { session: false }, (err, user, info) => {
+  if (err && err.param) {
+    return res.status(400).json(err)
+  } else if (err || !user) {
     return res.status(401).end()
   }
-  // req.logIn(user, { session: false }, err => {
-  //   if (err) return res.status(401).end()
-  //   next()
-  // })
-  req.body.user = {
-    id: user['_id'],
-    name: user.fullname,
-    browser: user.browser
-  };
-  next();
+  req.logIn(user, { session: false }, (err) => {
+    if (err) return res.status(401).end()
+    next()
+  })
 })(req, res, next)
 
 export const facebook = () =>
@@ -41,16 +34,29 @@ export const google = () =>
 export const master = () =>
   passport.authenticate('master', { session: false })
 
-export const token = ({ required, roles = User.roles } = {}) => (req, res, next) =>
-  passport.authenticate('token', { session: false }, (err, user, info) => {
-    if (err || (required && !user) || (required && !~roles.indexOf(user.role))) {
-      return res.status(401).end()
-    }
-    req.logIn(user, { session: false }, (err) => {
-      if (err) return res.status(401).end()
-      next()
-    })
-  })(req, res, next)
+  export const token = ({ required, roles = User.roles } = {}) => (
+    req,
+    res,
+    next
+  ) =>
+    passport.authenticate('token', { session: false }, (err, user, info) => {
+      if (
+        err ||
+        (required && !user)
+      ) {
+        return res.status(401).end()
+      }
+      // req.logIn(user, { session: false }, err => {
+      //   if (err) return res.status(401).end()
+      //   next()
+      // })
+      req.body.user = {
+        id: user['_id'],
+        name: user.fullname,
+        browser: user.browser
+      };
+      next();
+    })(req, res, next)
 
 passport.use('password', new BasicStrategy((email, password, done) => {
   const userSchema = new Schema({ email: schema.tree.email, password: schema.tree.password })
