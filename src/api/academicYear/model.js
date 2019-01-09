@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose'
 const academicYearSchema = new Schema(
   {
     academicYear: {
-      type: Number
+      type: String
     },
     createdBy: {
       type: Schema.Types.ObjectId,
