@@ -11,7 +11,7 @@ import {
 
 const router = new Router()
 
-router.post('/', create)
+router.post('/', token({ required: false }), create)
 
 router.get('/', token({ required: true }), query(), index)
 
