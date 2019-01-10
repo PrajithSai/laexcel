@@ -39,7 +39,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: 'mongodb://localhost/la-excel-dev',
+      uri: 'mongodb://localhost/laexcel',
       options: {
         debug: true
       }
