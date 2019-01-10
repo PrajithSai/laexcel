@@ -46,10 +46,6 @@ export const master = () =>
       ) {
         return res.status(401).end()
       }
-      // req.logIn(user, { session: false }, err => {
-      //   if (err) return res.status(401).end()
-      //   next()
-      // })
       req.body.user = {
         id: user['_id'],
         name: user.fullname,
