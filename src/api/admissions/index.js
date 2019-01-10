@@ -13,9 +13,9 @@ const router = new Router()
 
 router.post('/', token({ required: false }), create)
 
-router.get('/', token({ required: true }), query(), index)
+router.get('/', token({ required: false }), query(), index)
 
-router.get('/:id', token({ required: true }), show)
+router.get('/:id', token({ required: false }), show)
 
 router.put(
   '/:id',

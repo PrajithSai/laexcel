@@ -26,6 +26,7 @@ academicYearSchema.methods = {
       // simple view
       id: this.id,
       academicYear: this.academicYear,
+      status: this.status,
       createdBy: this.createdBy,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt

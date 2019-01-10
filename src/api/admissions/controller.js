@@ -28,7 +28,7 @@ export const show = ({ params }, res, next) =>
     .catch(next)
 
 export const index = (req, res, next) =>
-  Admissions.find({ status: { $ne: 'DELETED' } })
+  Admissions.find({ status: { $ne: 'DELETED' } }).populate('organization academicYear branch')
     .then(admissions =>
       admissions.map(admission => admission.view())
     )
