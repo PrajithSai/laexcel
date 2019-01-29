@@ -92,7 +92,6 @@ export const destroy = ({ params }, res, next) =>
 
 export const authLogin = ({ user }, res, next) => {
   if (user.status === ACTIVE) {
-    console.log('in active if')
     return sign(user.partialView())
       .then(token => ({ error: false, token, user: user.partialView() }))
       .then(success(res, 201))

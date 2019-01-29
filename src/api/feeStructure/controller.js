@@ -6,6 +6,7 @@ export const create = (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
+      req.params.message = 'fee structure created successfully';
       show(req, res, next)
     }
   })
@@ -17,7 +18,7 @@ export const show = (req, res, next) => {
     } else {
       res.send({
         error: false,
-        message: 'Registered successuflly',
+        message: req.params.message,
         result: resp
       })
     }
@@ -28,6 +29,7 @@ export const update = (req, res, next) => {
   FeeStructure.findOneAndUpdate({ '_id': req.params.id }, req.body, { new: true, upsert: false }, (err, resp) => {
     if (err) {
     } else {
+      req.params.message = 'fee structure updated successfully';
       show(req, res, next)
     }
   })
