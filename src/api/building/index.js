@@ -7,7 +7,8 @@ import {
   show,
   update,
   destroy,
-  deleteBuildings
+  deleteBuildings,
+  floorsByBuilding
 } from './controller'
 import { schema } from './model'
 export States, { schema } from './model'
@@ -116,5 +117,7 @@ router.put(
 router.delete('/:id', destroy)
 
 router.post('/delete', deleteBuildings)
+
+router.get('/floorsByBuilding/:id', floorsByBuilding)
 
 export default router
