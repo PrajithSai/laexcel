@@ -87,3 +87,12 @@ const findBuildings = (req, res) => {
       })
     )
 }
+
+export const floorsByBuilding = (req, res, next) => {
+  Buildings.findById(req.params.id).then(building => {
+    res.send({
+      error: false,
+      payload: building.floors
+    })
+  })
+}
